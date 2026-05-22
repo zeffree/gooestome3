@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Google Workspace Enterprise Standard vs Microsoft 365 E3 — TCO Builder</title>
+    <script>
+      (() => {
+        const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+        const theme =
+          param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --cp-bg: #f7f4ef;
+        --cp-bg-elevated: #fcfbf8;
+        --cp-surface: #ffffff;
+        --cp-surface-soft: #f5f5f5;
+        --cp-border: #dedede;
+        --cp-border-strong: #919191;
+        --cp-text: #242424;
+        --cp-text-muted: #5c5c5c;
+        --cp-text-soft: #6f6f6f;
+        --cp-accent: #b11f4b;
+        --cp-accent-hover: #9a1a41;
+        --cp-accent-soft: rgba(177, 31, 75, 0.08);
+        --cp-accent-fg: #ffffff;
+        --cp-success: #16a34a;
+        --cp-danger: #dc2626;
+        --cp-warning: #f59e0b;
+        --cp-link: #0078d4;
+        --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+        --cp-overlay: rgba(255, 255, 255, 0.8);
+        --cp-panel: rgba(255, 255, 255, 0.86);
+        --cp-panel-strong: rgba(255, 255, 255, 0.96);
+        --cp-sheen: rgba(255, 255, 255, 0.55);
+        --cp-highlight: rgba(177, 31, 75, 0.12);
+      }
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --cp-bg: #3d3b3a;
+        --cp-bg-elevated: #343231;
+        --cp-surface: #292929;
+        --cp-surface-soft: #2e2e2e;
+        --cp-border: #474747;
+        --cp-border-strong: #5f5f5f;
+        --cp-text: #dedede;
+        --cp-text-muted: #919191;
+        --cp-text-soft: #b0b0b0;
+        --cp-accent: #fd8ea1;
+        --cp-accent-hover: #fb7b91;
+        --cp-accent-soft: rgba(253, 142, 161, 0.14);
+        --cp-accent-fg: #1a1a1a;
+        --cp-success: #4ade80;
+        --cp-danger: #f87171;
+        --cp-warning: #fbbf24;
+        --cp-link: #4da6ff;
+        --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+        --cp-overlay: rgba(41, 41, 41, 0.88);
+        --cp-panel: rgba(41, 41, 41, 0.72);
+        --cp-panel-strong: rgba(41, 41, 41, 0.96);
+        --cp-sheen: rgba(255, 255, 255, 0.04);
+        --cp-highlight: rgba(253, 142, 161, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--cp-bg);
+        color: var(--cp-text);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 32px 24px 80px;
+      }
+
+      header.hero {
+        margin-bottom: 28px;
+      }
+      header.hero h1 {
+        font-size: 28px;
+        margin: 0 0 6px;
+        letter-spacing: -0.01em;
+      }
+      header.hero p {
+        margin: 0;
+        color: var(--cp-text-muted);
+        font-size: 15px;
+        max-width: 880px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+      }
+      .controls label { font-size: 13px; color: var(--cp-text-muted); display: flex; flex-direction: column; gap: 4px; }
+      .controls input[type="number"] {
+        font-family: inherit;
+        font-size: 15px;
+        padding: 8px 12px;
+        border: 1px solid var(--cp-border);
+        border-radius: 0.625rem;
+        background: var(--cp-bg-elevated);
+        color: var(--cp-text);
+        width: 140px;
+      }
+      .controls .spacer { flex: 1; }
+      .controls .legend { font-size: 12px; color: var(--cp-text-soft); }
+      .pill {
+        display: inline-block;
+        background: var(--cp-accent-soft);
+        color: var(--cp-accent);
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .grid-two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+      @media (max-width: 880px) { .grid-two { grid-template-columns: 1fr; } }
+
+      .card {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+      }
+      .card h2 {
+        font-size: 18px;
+        margin: 0 0 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .card .sub {
+        font-size: 13px;
+        color: var(--cp-text-muted);
+        margin-bottom: 16px;
+      }
+      .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin: 8px 0 16px;
+      }
+      .price-row .price {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .price-row .unit {
+        color: var(--cp-text-muted);
+        font-size: 13px;
+      }
+      ul.features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+      }
+      ul.features li {
+        padding: 6px 0;
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        border-top: 1px dashed var(--cp-border);
+      }
+      ul.features li:first-child { border-top: none; }
+      ul.features li::before {
+        content: "✓";
+        color: var(--cp-success);
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      ul.features li.miss::before {
+        content: "—";
+        color: var(--cp-text-soft);
+      }
+
+      section.gap-section h2 {
+        font-size: 22px;
+        margin: 12px 0 4px;
+      }
+      section.gap-section > p.intro {
+        color: var(--cp-text-muted);
+        margin: 0 0 18px;
+        font-size: 14px;
+        max-width: 900px;
+      }
+
+      .capability {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 22px;
+        margin-bottom: 18px;
+        box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+      }
+      .cap-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .cap-head h3 {
+        margin: 0 0 4px;
+        font-size: 17px;
+      }
+      .cap-head .baseline {
+        font-size: 13px;
+        color: var(--cp-text-muted);
+      }
+      .cap-head .baseline strong { color: var(--cp-text); font-weight: 600; }
+
+      .options {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .option {
+        border: 1.5px solid var(--cp-border);
+        border-radius: 12px;
+        padding: 14px;
+        background: var(--cp-bg-elevated);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+        user-select: none;
+      }
+      .option:hover { border-color: var(--cp-border-strong); }
+      .option.selected {
+        border-color: var(--cp-accent);
+        background: var(--cp-accent-soft);
+      }
+      .option .vendor {
+        font-weight: 600;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+      .option .product {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+      }
+      .option .cost {
+        font-size: 18px;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+      .option .cost small {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--cp-text-muted);
+      }
+      .option .quadrant {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--cp-surface);
+        color: var(--cp-text-muted);
+        border: 1px solid var(--cp-border);
+        font-weight: 600;
+      }
+      .option .quadrant.leader { background: rgba(22,163,74,0.1); color: var(--cp-success); border-color: rgba(22,163,74,0.3); }
+      .option .quadrant.challenger { background: rgba(0,120,212,0.1); color: var(--cp-link); border-color: rgba(0,120,212,0.3); }
+      .option .quadrant.visionary { background: rgba(245,158,11,0.12); color: var(--cp-warning); border-color: rgba(245,158,11,0.3); }
+      .option .quadrant.niche { background: var(--cp-surface-soft); color: var(--cp-text-soft); }
+      .option .notes { font-size: 11.5px; color: var(--cp-text-soft); line-height: 1.4; }
+
+      /* Sticky summary */
+      .summary {
+        position: sticky;
+        bottom: 16px;
+        background: var(--cp-panel-strong);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 18px 22px;
+        margin-top: 28px;
+        box-shadow: var(--cp-shadow);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      @media (max-width: 880px) { .summary { grid-template-columns: 1fr 1fr; } }
+      .summary .stat .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--cp-text-muted);
+        font-weight: 600;
+      }
+      .summary .stat .value {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 2px;
+        letter-spacing: -0.01em;
+      }
+      .summary .stat .sub {
+        font-size: 12px;
+        color: var(--cp-text-soft);
+        margin-top: 2px;
+      }
+      .summary .stat.highlight .value { color: var(--cp-accent); }
+      .summary .stat.delta-pos .value { color: var(--cp-danger); }
+      .summary .stat.delta-neg .value { color: var(--cp-success); }
+
+      footer {
+        margin-top: 32px;
+        font-size: 12px;
+        color: var(--cp-text-soft);
+        line-height: 1.6;
+      }
+      footer code {
+        font-family: Consolas, "Courier New", Courier, monospace;
+        background: var(--cp-surface-soft);
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 11.5px;
+      }
+      .toggle-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--cp-text-muted);
+        margin-bottom: 10px;
+      }
+      .btn-mini {
+        font: inherit;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+        cursor: pointer;
+      }
+      .btn-mini:hover { background: var(--cp-highlight); border-color: var(--cp-accent); }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <span class="pill">Cost & Capability Comparison</span>
+        <h1 style="margin-top:10px;">Google Workspace Enterprise Standard vs Microsoft 365 E3</h1>
+        <p>
+          M365 E3 bundles productivity + a broad security and compliance stack. Google Workspace Enterprise Standard
+          covers productivity but leaves several E3-equivalent capabilities to be sourced from third parties. Pick
+          best-of-breed alternatives from the Gartner Magic Quadrant for each gap and see the true TCO live.
+        </p>
+      </header>
+
+      <div class="controls">
+        <label>
+          Number of users
+          <input id="users" type="number" min="1" value="1000" />
+        </label>
+        <label>
+          Term
+          <select id="term" style="font: inherit; font-size: 15px; padding: 8px 12px; border: 1px solid var(--cp-border); border-radius: 0.625rem; background: var(--cp-bg-elevated); color: var(--cp-text);">
+            <option value="1">Annual (per user / month × 12)</option>
+            <option value="0.0833">Monthly view</option>
+          </select>
+        </label>
+        <div class="spacer"></div>
+        <div class="legend">
+          Prices = US list, annual commit (per user / month). Validate with your reseller — discounts vary by volume and region.
+        </div>
+      </div>
+
+      <!-- Base SKU comparison -->
+      <div class="grid-two">
+        <div class="card">
+          <h2>Google Workspace Enterprise Standard <span class="pill" style="background:rgba(0,120,212,0.1);color:var(--cp-link);">Google</span></h2>
+          <div class="sub">Productivity base SKU</div>
+          <div class="price-row">
+            <span class="price">$23.00</span>
+            <span class="unit">/ user / month (annual)</span>
+          </div>
+          <ul class="features">
+            <li>Gmail, Calendar, Drive (5 TB pooled)</li>
+            <li>Docs, Sheets, Slides, Meet (500-participant)</li>
+            <li>Vault (basic eDiscovery & retention)</li>
+            <li>2-SV, basic Context-Aware Access</li>
+            <li>Cloud Identity Free tier</li>
+            <li class="miss">No advanced endpoint management / UEM for Windows / macOS at parity with Intune</li>
+            <li class="miss">No EDR / next-gen AV equivalent to Defender for Endpoint P1</li>
+            <li class="miss">No advanced DLP across endpoints (Drive DLP only)</li>
+            <li class="miss">No conditional access at Entra ID P1 depth</li>
+            <li class="miss">No advanced email threat protection (sandboxing/impersonation) at DfO P1 parity</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Microsoft 365 E3 <span class="pill">Microsoft</span></h2>
+          <div class="sub">Productivity + security & compliance base SKU</div>
+          <div class="price-row">
+            <span class="price">$36.00</span>
+            <span class="unit">/ user / month (annual)</span>
+          </div>
+          <ul class="features">
+            <li>Exchange, SharePoint, OneDrive, Teams, Office apps</li>
+            <li>Entra ID P1 — Conditional Access, SSO, MFA, dynamic groups</li>
+            <li>Intune — UEM for Windows, macOS, iOS, Android, Linux</li>
+            <li>Defender Antivirus + Defender for Endpoint Plan 1 (EDR-lite)</li>
+            <li>Purview Information Protection P1 — sensitivity labels, basic DLP</li>
+            <li>Exchange Online Protection (anti-spam, anti-malware)</li>
+            <li>Purview eDiscovery Standard, Audit Standard, retention policies</li>
+            <li>Windows 11 Enterprise upgrade rights</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Gap section -->
+      <section class="gap-section">
+        <h2>Match M365 E3 security capabilities on Google Workspace</h2>
+        <p class="intro">
+          For each capability E3 includes, pick a third-party option to layer onto Google Workspace. Vendors are sourced
+          from the most recent Gartner Magic Quadrant in each category. Toggle the "Already covered by GWS" switch when
+          the native Workspace control is acceptable for your risk posture.
+        </p>
+        <div id="capabilities"></div>
+      </section>
+
+      <!-- Live summary -->
+      <div class="summary" id="summary">
+        <div class="stat">
+          <div class="label">M365 E3 total</div>
+          <div class="value" id="sumE3">$0</div>
+          <div class="sub" id="sumE3sub">per year, all users</div>
+        </div>
+        <div class="stat">
+          <div class="label">GWS Ent Std + add-ons</div>
+          <div class="value" id="sumGWS">$0</div>
+          <div class="sub" id="sumGWSsub">per year, all users</div>
+        </div>
+        <div class="stat highlight">
+          <div class="label">Per user / month (GWS stack)</div>
+          <div class="value" id="sumPerUser">$0</div>
+          <div class="sub">base + selected security</div>
+        </div>
+        <div class="stat" id="deltaStat">
+          <div class="label">Delta vs M365 E3</div>
+          <div class="value" id="sumDelta">$0</div>
+          <div class="sub" id="sumDeltaSub">annual</div>
+        </div>
+      </div>
+
+      <footer>
+        <strong>Methodology &amp; sources.</strong> Microsoft and Google list prices reflect publicly published US rates
+        for annual commitments as of mid-2026; check current pricing pages and your reseller for exact terms in your
+        region. Third-party prices are representative midpoints from public price sheets, G2, and analyst reports — they
+        commonly move ±20% with volume, multi-year terms, and bundling. Magic Quadrant placements reference the most
+        recently published Gartner MQ for: Access Management (2024), Unified Endpoint Management Tools (2024),
+        Endpoint Protection Platforms (2024), Security Service Edge (2024) and Data Loss Prevention surveys,
+        Email Security Platforms (2024), and Enterprise Backup &amp; Recovery Software Solutions (2024).
+        This tool is a planning aid, not a procurement quote.
+      </footer>
+    </div>
+
+    <script>
+      // ============ Data model ============
+      const BASE = {
+        gws: { name: "Google Workspace Enterprise Standard", price: 23.0 },
+        e3:  { name: "Microsoft 365 E3", price: 36.0 },
+      };
+
+      // quadrant: leader | challenger | visionary | niche
+      const CAPS = [
+        {
+          id: "iam",
+          name: "Identity & Access Management",
+          e3: "Entra ID P1 — Conditional Access, MFA, SSO, dynamic groups, self-service password reset",
+          gwsNative: "Cloud Identity Free + 2-SV (limited Context-Aware Access)",
+          mq: "Gartner MQ — Access Management 2024",
+          options: [
+            { vendor: "Okta", product: "Workforce Identity SSO + Adaptive MFA", price: 6.00, quadrant: "leader", notes: "SSO $2 + Adaptive MFA $4. Industry-standard IdP." },
+            { vendor: "Ping Identity", product: "PingOne for Workforce — Essential", price: 3.00, quadrant: "leader", notes: "Strong in regulated industries; bundle pricing." },
+            { vendor: "Microsoft", product: "Entra ID P1 (standalone)", price: 6.00, quadrant: "leader", notes: "Same product included in E3; integrates with Google via SAML." },
+            { vendor: "CyberArk", product: "Workforce Identity SSO + MFA", price: 5.00, quadrant: "leader", notes: "PAM-adjacent; good for high-privilege use cases." },
+            { vendor: "IBM", product: "Security Verify SaaS", price: 3.75, quadrant: "challenger", notes: "Per user/month, bundles SSO + MFA." },
+            { vendor: "JumpCloud", product: "Directory + SSO + MFA", price: 11.00, quadrant: "niche", notes: "All-in-one for SMB/midmarket." },
+          ],
+        },
+        {
+          id: "uem",
+          name: "Unified Endpoint Management (Windows / macOS / mobile)",
+          e3: "Intune — full UEM across Windows, macOS, iOS, Android, Linux",
+          gwsNative: "Google endpoint management (basic mobile + ChromeOS); weak Windows/macOS",
+          mq: "Gartner MQ — Unified Endpoint Management Tools 2024",
+          options: [
+            { vendor: "Microsoft", product: "Intune Plan 1 (standalone)", price: 8.00, quadrant: "leader", notes: "Cross-platform UEM; best Windows depth." },
+            { vendor: "Omnissa (VMware) Workspace ONE", product: "Standard", price: 3.78, quadrant: "leader", notes: "Per device/month; UEM + basic access." },
+            { vendor: "IBM MaaS360", product: "Essentials", price: 4.00, quadrant: "leader", notes: "Strong analytics, mobile-first heritage." },
+            { vendor: "Ivanti Neurons", product: "for UEM", price: 6.50, quadrant: "leader", notes: "Heritage MobileIron + LANDesk." },
+            { vendor: "ManageEngine", product: "Endpoint Central UEM", price: 3.95, quadrant: "challenger", notes: "Per endpoint/month; aggressive pricing." },
+            { vendor: "Jamf", product: "Pro (Apple-only)", price: 4.00, quadrant: "visionary", notes: "Best-in-class Mac/iOS; pair with another UEM for Windows." },
+          ],
+        },
+        {
+          id: "epp",
+          name: "Endpoint Protection / EDR",
+          e3: "Defender for Endpoint Plan 1 — next-gen AV, attack-surface reduction",
+          gwsNative: "None — relies on OS-native AV (Defender on Windows, XProtect on Mac)",
+          mq: "Gartner MQ — Endpoint Protection Platforms 2024",
+          options: [
+            { vendor: "CrowdStrike", product: "Falcon Pro", price: 8.99, quadrant: "leader", notes: "Per endpoint/month; widely deployed EDR." },
+            { vendor: "Microsoft", product: "Defender for Endpoint P1 (standalone)", price: 3.00, quadrant: "leader", notes: "Cross-platform AV + ASR; cheapest credible option." },
+            { vendor: "SentinelOne", product: "Singularity Core", price: 5.00, quadrant: "leader", notes: "Autonomous EDR; popular mid-market choice." },
+            { vendor: "Sophos", product: "Intercept X Advanced", price: 4.50, quadrant: "leader", notes: "Strong anti-ransomware; channel-friendly." },
+            { vendor: "Trend Micro", product: "Vision One Endpoint Security", price: 5.00, quadrant: "leader", notes: "Bundles EDR + email + workload." },
+            { vendor: "Trellix", product: "Endpoint Security", price: 4.00, quadrant: "challenger", notes: "Heritage McAfee; enterprise install base." },
+          ],
+        },
+        {
+          id: "dlp",
+          name: "Data Loss Prevention (endpoint + cloud)",
+          e3: "Purview DLP across Exchange, SharePoint, OneDrive, Teams, endpoint (basic)",
+          gwsNative: "Drive DLP + Gmail DLP only (no endpoint DLP)",
+          mq: "Gartner MQ — Security Service Edge 2024 (DLP-as-feature) / DLP Market Guide",
+          options: [
+            { vendor: "Microsoft", product: "Purview DLP (via E5 Compliance add-on)", price: 6.00, quadrant: "leader", notes: "Full endpoint + cloud DLP. Standalone via Purview DLP SKU or E5 Compliance add-on (~$12); apportioned cost shown." },
+            { vendor: "Forcepoint", product: "DLP Enterprise", price: 9.00, quadrant: "leader", notes: "Endpoint + network DLP; mature policy engine." },
+            { vendor: "Symantec (Broadcom)", product: "DLP Cloud", price: 8.50, quadrant: "leader", notes: "Heritage Vontu; deep content inspection." },
+            { vendor: "Netskope", product: "SSE with DLP module", price: 12.00, quadrant: "leader", notes: "Cloud-native; bundles SWG + CASB + DLP." },
+            { vendor: "Trellix", product: "DLP Endpoint + Network", price: 7.00, quadrant: "challenger", notes: "Heritage McAfee DLP suite." },
+            { vendor: "Proofpoint", product: "Information Protection (Endpoint DLP)", price: 8.00, quadrant: "leader", notes: "Acquired ObserveIT; strong insider risk." },
+            { vendor: "Zscaler", product: "Data Protection (SSE)", price: 10.00, quadrant: "leader", notes: "Bundles with ZIA; cloud-only DLP." },
+          ],
+        },
+        {
+          id: "email",
+          name: "Advanced Email Security (sandboxing, impersonation, URL rewriting)",
+          e3: "Exchange Online Protection only — needs DfO P1 ($2) for sandboxing",
+          gwsNative: "Gmail spam/phishing + Advanced Phishing & Malware (in Enterprise)",
+          mq: "Gartner MQ — Email Security Platforms 2024",
+          options: [
+            { vendor: "Abnormal Security", product: "Inbound Email Security", price: 4.50, quadrant: "leader", notes: "API-based; behavioral AI for BEC." },
+            { vendor: "Proofpoint", product: "Email Protection + TAP", price: 5.50, quadrant: "leader", notes: "Gateway + sandboxing; enterprise standard." },
+            { vendor: "Mimecast", product: "Email Security Cloud Gateway", price: 4.00, quadrant: "leader", notes: "Targeted Threat Protection bundle." },
+            { vendor: "Microsoft", product: "Defender for Office 365 P1 (standalone)", price: 2.00, quadrant: "leader", notes: "Works with Gmail via journaling; cheapest." },
+            { vendor: "Cisco", product: "Secure Email Threat Defense", price: 4.50, quadrant: "challenger", notes: "API-based; integrates with SecureX." },
+            { vendor: "Barracuda", product: "Email Protection Premium", price: 3.50, quadrant: "challenger", notes: "Bundles backup + archiving." },
+          ],
+        },
+        {
+          id: "ip",
+          name: "Information Protection / Labels & Encryption",
+          e3: "Purview Information Protection P1 — sensitivity labels, manual + automatic",
+          gwsNative: "Drive labels (limited), Client-Side Encryption (limited admin tooling)",
+          mq: "Gartner MQ — Security Service Edge 2024 (data protection capabilities)",
+          options: [
+            { vendor: "Microsoft", product: "Purview Information Protection P1 (standalone)", price: 2.00, quadrant: "leader", notes: "Works across M365 + 3rd party via MIP SDK." },
+            { vendor: "Fortra (HelpSystems)", product: "Titus / Boldon James Classifier", price: 5.00, quadrant: "niche", notes: "Classification-led; integrates with Google." },
+            { vendor: "Seclore", product: "Data-Centric Security Platform", price: 6.00, quadrant: "niche", notes: "Persistent EDRM; strong for external sharing." },
+            { vendor: "Virtru", product: "Data Protection for Google Workspace", price: 6.50, quadrant: "niche", notes: "Native Gmail/Drive integration; TDF-based." },
+            { vendor: "Nightfall AI", product: "DLP + Classification", price: 8.00, quadrant: "visionary", notes: "ML classification across SaaS." },
+          ],
+        },
+        {
+          id: "ediscovery",
+          name: "eDiscovery, Audit & Retention",
+          e3: "Purview eDiscovery Standard + Audit Standard + retention policies",
+          gwsNative: "Vault — covers Gmail/Drive/Chat/Meet retention + hold + export",
+          mq: "Gartner MQ — Enterprise Information Archiving (Market Guide)",
+          options: [
+            { vendor: "GWS Vault", product: "Native (included in Enterprise Standard)", price: 0.00, quadrant: "leader", notes: "Often sufficient — covers core eDiscovery." },
+            { vendor: "Smarsh", product: "Enterprise Archive", price: 8.00, quadrant: "leader", notes: "Best for FINRA/SEC regulated industries." },
+            { vendor: "Global Relay", product: "Archive", price: 9.00, quadrant: "leader", notes: "Strong supervision tooling." },
+            { vendor: "Proofpoint", product: "Enterprise Archive", price: 7.50, quadrant: "leader", notes: "Heritage Acompli; deep journaling." },
+            { vendor: "Mimecast", product: "Cloud Archive", price: 5.00, quadrant: "challenger", notes: "Bundles with email security stack." },
+          ],
+        },
+        {
+          id: "backup",
+          name: "SaaS Backup (Gmail / Drive / Shared Drives)",
+          e3: "Not in E3 either — typically added separately; called out for parity",
+          gwsNative: "Vault is retention, not backup. Google has no native point-in-time restore for accidental deletion / ransomware.",
+          mq: "Gartner MQ — Enterprise Backup & Recovery Software Solutions 2024",
+          options: [
+            { vendor: "Druva", product: "Data Resiliency Cloud for GWS", price: 3.50, quadrant: "leader", notes: "SaaS-native; immutable backups." },
+            { vendor: "Veeam", product: "Backup for Google Workspace", price: 2.50, quadrant: "leader", notes: "Per user/month; flexible storage targets." },
+            { vendor: "Commvault", product: "Cloud Backup for GWS", price: 4.00, quadrant: "leader", notes: "Enterprise control plane." },
+            { vendor: "Spanning (Kaseya)", product: "Backup for Google Workspace", price: 4.00, quadrant: "niche", notes: "Mid-market focus; simple UX." },
+            { vendor: "Afi.ai", product: "GWS Backup", price: 3.00, quadrant: "niche", notes: "AI-driven recovery; modern UX." },
+          ],
+        },
+      ];
+
+      // ============ Rendering ============
+      const capsRoot = document.getElementById("capabilities");
+
+      function quadrantLabel(q) {
+        return { leader: "Leader", challenger: "Challenger", visionary: "Visionary", niche: "Niche" }[q] || q;
+      }
+
+      function renderCapabilities() {
+        capsRoot.innerHTML = "";
+        CAPS.forEach((cap) => {
+          const card = document.createElement("div");
+          card.className = "capability";
+          card.dataset.capId = cap.id;
+
+          const head = document.createElement("div");
+          head.className = "cap-head";
+          head.innerHTML = `
+            <div>
+              <h3>${cap.name}</h3>
+              <div class="baseline"><strong>M365 E3 ships:</strong> ${cap.e3}</div>
+              <div class="baseline"><strong>GWS native:</strong> ${cap.gwsNative}</div>
+              <div class="baseline" style="margin-top:4px;color:var(--cp-text-soft);">${cap.mq}</div>
+            </div>
+          `;
+          card.appendChild(head);
+
+          const toggle = document.createElement("div");
+          toggle.className = "toggle-row";
+          toggle.innerHTML = `
+            <button class="btn-mini" data-action="none" data-cap="${cap.id}">No third-party (rely on GWS native)</button>
+            <span>or pick one below ↓</span>
+          `;
+          card.appendChild(toggle);
+
+          const opts = document.createElement("div");
+          opts.className = "options";
+          cap.options.forEach((o, idx) => {
+            const oe = document.createElement("div");
+            oe.className = "option";
+            oe.dataset.capId = cap.id;
+            oe.dataset.optIdx = idx;
+            oe.innerHTML = `
+              <div class="vendor">
+                <span>${o.vendor}</span>
+                <span class="quadrant ${o.quadrant}">${quadrantLabel(o.quadrant)}</span>
+              </div>
+              <div class="product">${o.product}</div>
+              <div class="cost">$${o.price.toFixed(2)} <small>/ user / month</small></div>
+              <div class="notes">${o.notes}</div>
+            `;
+            oe.addEventListener("click", () => selectOption(cap.id, idx));
+            opts.appendChild(oe);
+          });
+          card.appendChild(opts);
+
+          capsRoot.appendChild(card);
+        });
+
+        // none buttons
+        capsRoot.querySelectorAll('[data-action="none"]').forEach((b) => {
+          b.addEventListener("click", (e) => {
+            const cid = e.target.dataset.cap;
+            selectOption(cid, null);
+          });
+        });
+      }
+
+      // selections: { capId: optIdx | null }
+      const selections = {};
+      // initialise with a reasonable default (pick the Microsoft option where present — apples to apples)
+      CAPS.forEach((c) => {
+        const msIdx = c.options.findIndex((o) => o.vendor === "Microsoft" || o.vendor === "GWS Vault");
+        selections[c.id] = msIdx >= 0 ? msIdx : 0;
+      });
+
+      function selectOption(capId, optIdx) {
+        selections[capId] = optIdx;
+        // re-render visual state for this cap only
+        const card = capsRoot.querySelector(`.capability[data-cap-id="${capId}"]`);
+        card.querySelectorAll(".option").forEach((o) => {
+          const idx = parseInt(o.dataset.optIdx, 10);
+          o.classList.toggle("selected", idx === optIdx);
+        });
+        updateSummary();
+      }
+
+      function paintInitialSelections() {
+        Object.entries(selections).forEach(([capId, idx]) => {
+          if (idx === null || idx === undefined) return;
+          const card = capsRoot.querySelector(`.capability[data-cap-id="${capId}"]`);
+          if (!card) return;
+          const opt = card.querySelector(`.option[data-opt-idx="${idx}"]`);
+          if (opt) opt.classList.add("selected");
+        });
+      }
+
+      function fmtMoney(n) {
+        return "$" + Math.round(n).toLocaleString();
+      }
+
+      function updateSummary() {
+        const users = Math.max(1, parseInt(document.getElementById("users").value || "1", 10));
+        const monthly = document.getElementById("term").value === "0.0833";
+
+        let gwsAddon = 0;
+        CAPS.forEach((c) => {
+          const idx = selections[c.id];
+          if (idx === null || idx === undefined) return;
+          gwsAddon += c.options[idx].price;
+        });
+
+        const gwsPerUserMonth = BASE.gws.price + gwsAddon;
+        const e3PerUserMonth = BASE.e3.price;
+
+        const factor = monthly ? 1 : 12;
+        const gwsTotal = gwsPerUserMonth * users * factor;
+        const e3Total = e3PerUserMonth * users * factor;
+        const delta = gwsTotal - e3Total;
+
+        document.getElementById("sumE3").textContent = fmtMoney(e3Total);
+        document.getElementById("sumGWS").textContent = fmtMoney(gwsTotal);
+        document.getElementById("sumPerUser").textContent = "$" + gwsPerUserMonth.toFixed(2);
+        document.getElementById("sumDelta").textContent = (delta >= 0 ? "+" : "−") + fmtMoney(Math.abs(delta));
+
+        const term = monthly ? "per month, all users" : "per year, all users";
+        document.getElementById("sumE3sub").textContent = term;
+        document.getElementById("sumGWSsub").textContent = term;
+        document.getElementById("sumDeltaSub").textContent =
+          (delta >= 0 ? "GWS stack costs more — " : "GWS stack costs less — ") + term;
+
+        const deltaStat = document.getElementById("deltaStat");
+        deltaStat.classList.remove("delta-pos", "delta-neg");
+        deltaStat.classList.add(delta >= 0 ? "delta-pos" : "delta-neg");
+      }
+
+      // init
+      renderCapabilities();
+      paintInitialSelections();
+      updateSummary();
+      document.getElementById("users").addEventListener("input", updateSummary);
+      document.getElementById("term").addEventListener("change", updateSummary);
+    </script>
+  </body>
+</html>
